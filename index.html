@@ -60,7 +60,11 @@ article p{font-size:.84rem!important}
 main section>div{padding:2.25rem 1rem!important}
 .max-w-6xl.grid{gap:.9rem!important}
 .photo{border-radius:.6rem}
-.fld{font-size:16px}
+.fld{font-size:16px;text-align:left}
+label{text-align:left}
+.pl-5{padding-left:0!important;border-left:0!important;border-top:3px solid var(--gold);padding-top:.6rem}
+#contact article.flex{flex-direction:column;justify-content:center}
+#cb-open{flex-direction:column;justify-content:center;text-align:center}
 .m-center{text-align:center;font-size:1.3rem!important;margin-bottom:.5rem}
 .m-center::after{content:"";display:block;width:2.5rem;height:3px;border-radius:2px;background:var(--gold);margin:.7rem auto 0}
 .mob-flat{display:contents}
@@ -72,6 +76,11 @@ main section>div{padding:2.25rem 1rem!important}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
+<!-- Vercel Web Analytics -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -202,9 +211,16 @@ main section>div{padding:2.25rem 1rem!important}
           <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full" style="background:#061c4b" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f4efe2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/></svg></span>
           <div><h3 class="text-lg">E-mail</h3><a href="mailto:shefa.business7@gmail.com" class="underline break-all" style="text-decoration-color:var(--gold)">shefa.business7@gmail.com</a></div>
         </article>
+        <article class="rounded-2xl border" style="background:var(--card);border-color:var(--line)">
+          <button type="button" id="cb-open" class="flex w-full items-center gap-4 p-5 text-left rounded-2xl" aria-controls="cb-wrap">
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full" style="background:#061c4b" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f4efe2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+            <span class="block"><span class="block text-lg font-bold" style="color:#061c4b;font-family:Inter,system-ui,sans-serif">Contactez-moi</span><span class="underline" style="text-decoration-color:var(--gold)">Laissez-nous votre numéro</span></span>
+          </button>
+        </article>
       </div>
     </div>
     <article class="rounded-2xl p-6 md:p-8 border" style="background:var(--card);border-color:var(--line)">
+      <div id="cf-wrap">
       <h3 class="text-xl">Formulaire de contact</h3>
       <form id="cf" class="mt-5 space-y-4" action="https://formspree.io/f/xdeggzwz" method="POST">
         <div class="grid sm:grid-cols-2 gap-4">
@@ -236,6 +252,38 @@ main section>div{padding:2.25rem 1rem!important}
         });
       })();
       </script>
+      </div>
+      <div id="cb-wrap" hidden>
+        <h3 class="text-xl">Contactez-moi</h3>
+        <p class="mt-2 text-sm" style="color:var(--mute)">Laissez-nous votre nom et votre numéro de téléphone.</p>
+        <form id="cb" class="mt-5 space-y-4" action="https://formspree.io/f/xdeggzwz" method="POST">
+          <input type="hidden" name="objet" value="Demande de rappel">
+          <div class="grid sm:grid-cols-2 gap-4"><div><label for="cb-prenom" class="block text-sm font-medium mb-1">Prénom</label><input id="cb-prenom" name="prenom" class="fld" type="text" autocomplete="given-name" required></div><div><label for="cb-nom" class="block text-sm font-medium mb-1">Nom</label><input id="cb-nom" name="nom" class="fld" type="text" autocomplete="family-name" required></div></div>
+          <div><label for="cb-telephone" class="block text-sm font-medium mb-1">Numéro de téléphone</label><input id="cb-telephone" name="telephone" class="fld" type="tel" inputmode="tel" autocomplete="tel" minlength="6" required></div>
+          <button type="submit" class="btn w-full sm:w-auto">Envoyer ma demande</button>
+          <div id="cb-status" role="status" aria-live="polite" hidden class="rounded-lg px-4 py-3 text-sm font-medium"></div>
+        </form>
+        <p class="mt-5"><button type="button" id="cb-back" class="underline text-sm" style="text-decoration-color:var(--gold)">← Retour au formulaire de contact</button></p>
+        <script>
+        (function(){
+          var cf=document.getElementById('cf-wrap'),cb=document.getElementById('cb-wrap'),f=document.getElementById('cb'),s=document.getElementById('cb-status'),b=f.querySelector('button[type=submit]');
+          var ERR='Votre demande n’a pas pu être envoyée. Appelez-nous au 02\u00a059\u00a050\u00a089\u00a054 ou écrivez-nous à shefa.business7@gmail.com.';
+          function swap(toCb){cf.hidden=toCb;cb.hidden=!toCb;s.hidden=true;var t=toCb?cb:cf;t.scrollIntoView({behavior:'smooth',block:'center'});if(toCb){document.getElementById('cb-prenom').focus({preventScroll:true});}}
+          document.getElementById('cb-open').addEventListener('click',function(){swap(true);});
+          document.getElementById('cb-back').addEventListener('click',function(){swap(false);});
+          function show(ok,t){s.textContent=t;s.hidden=false;s.style.background=ok?'#e6f2e3':'#fbe9e7';s.style.color=ok?'#1d4a2a':'#7a1d14';s.style.border='1px solid '+(ok?'#b9d9b2':'#efc2bc');}
+          f.addEventListener('submit',function(e){
+            e.preventDefault();
+            if(!f.checkValidity()){f.reportValidity();return;}
+            var label=b.textContent;b.disabled=true;b.textContent='Envoi en cours…';s.hidden=true;
+            fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}})
+              .then(function(r){if(r.ok){f.reset();show(true,'Demande envoyée ✓ Merci, nous vous recontacterons rapidement.');}else{show(false,ERR);}})
+              .catch(function(){show(false,ERR);})
+              .then(function(){b.disabled=false;b.textContent=label;});
+          });
+        })();
+        </script>
+      </div>
     </article>
   </div>
 </section>

@@ -292,34 +292,61 @@ label{text-align:left}
 })();
 </script>
 <script>
-(function(){
-  var TEL='02\u00a059\u00a050\u00a089\u00a054';
-  var ERR_MSG='Votre message n’a pas pu être envoyé. Écrivez-nous à shefa.business7@gmail.com ou appelez-nous au '+TEL+'.';
-  var ERR_CB='Votre demande n’a pas pu être envoyée. Appelez-nous au '+TEL+' ou écrivez-nous à shefa.business7@gmail.com.';
-  window.formspree=window.formspree||function(){(formspree.q=formspree.q||[]).push(arguments);};
-  function wire(formSel,statusSel,okMsg,errMsg){
-    var form=document.querySelector(formSel),st=document.querySelector(statusSel);
-    if(!form||!st)return;
-    var btn=form.querySelector('button[type=submit]'),label=btn.textContent;
-    function show(ok,t){st.textContent=t;st.hidden=false;st.style.background=ok?'#e6f2e3':'#fbe9e7';st.style.color=ok?'#1d4a2a':'#7a1d14';st.style.border='1px solid '+(ok?'#b9d9b2':'#efc2bc');}
-    form.addEventListener('submit',function(e){
-      if(window.__fsFail){e.preventDefault();e.stopImmediatePropagation();show(false,errMsg);}
-    },true);
-    formspree('initForm',{
-      formElement:formSel,
-      formId:'xdeggzwz',
-      disable:function(){btn.disabled=true;btn.textContent='Envoi en cours…';st.hidden=true;},
-      enable:function(){btn.disabled=false;btn.textContent=label;},
-      renderSuccess:function(){form.reset();show(true,okMsg);},
-      renderFieldErrors:function(ctx,err){console.error('Formspree – erreur de champ',err);show(false,'Merci de vérifier les champs du formulaire.');},
-      renderFormError:function(ctx,msg){console.error('Formspree – erreur',msg);show(false,errMsg);},
-      onFailure:function(ctx,err){console.error('Formspree – échec',err);show(false,errMsg);}
+(function () {
+  var TEL = '02\u00a059\u00a050\u00a089\u00a054';
+  var ERR_MSG = 'Votre message n’a pas pu être envoyé. Écrivez-nous à shefa.business7@gmail.com ou appelez-nous au ' + TEL + '.';
+  var ERR_CB = 'Votre demande n’a pas pu être envoyée. Appelez-nous au ' + TEL + ' ou écrivez-nous à shefa.business7@gmail.com.';
+
+  function wire(formSel, statusSel, okMsg, errMsg) {
+    var form = document.querySelector(formSel);
+    var st = document.querySelector(statusSel);
+    if (!form || !st) return;
+    var btn = form.querySelector('button[type=submit]');
+    var label = btn.textContent;
+
+    function show(ok, t) {
+      st.textContent = t;
+      st.hidden = false;
+      st.style.background = ok ? '#e6f2e3' : '#fbe9e7';
+      st.style.color = ok ? '#1d4a2a' : '#7a1d14';
+      st.style.border = ok ? '1px solid #b7d7b0' : '1px solid #f0b8b0';
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = 'Envoi en cours...';
+      st.hidden = true;
+
+      try {
+        var res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          form.reset();
+          show(true, okMsg);
+        } else {
+          var data = await res.json().catch(function () { return {}; });
+          if (data.errors) {
+            show(false, 'Merci de vérifier les champs du formulaire.');
+          } else {
+            show(false, errMsg);
+          }
+        }
+      } catch (err) {
+        show(false, errMsg);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = label;
+      }
     });
   }
-  wire('#cf','#cf-status','Message envoyé ✓ Merci, nous vous répondrons rapidement.',ERR_MSG);
-  wire('#cb','#cb-status','Demande envoyée ✓ Merci, nous vous recontacterons rapidement.',ERR_CB);
+
+  wire('#cf', '#cf-status', 'Message envoyé ✓ Merci, nous vous répondrons rapidement.', ERR_MSG);
+  wire('#cb', '#cb-status', 'Demande envoyée ✓ Merci, nous vous recontacterons rapidement.', ERR_CB);
 })();
 </script>
-<script src="https://unpkg.com/@formspree/ajax@1" defer onerror="window.__fsFail=1"></script>
 </body>
 </html>

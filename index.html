@@ -224,63 +224,33 @@ label{text-align:left}
       <h3 class="text-xl">Formulaire de contact</h3>
       <form id="cf" class="mt-5 space-y-4" action="https://formspree.io/f/xdeggzwz" method="POST">
         <div class="grid sm:grid-cols-2 gap-4">
-          <div><label for="cf-prenom" class="block text-sm font-medium mb-1">Prénom</label><input id="cf-prenom" name="prenom" class="fld" type="text" autocomplete="given-name" required></div>
-          <div><label for="cf-nom" class="block text-sm font-medium mb-1">Nom</label><input id="cf-nom" name="nom" class="fld" type="text" autocomplete="family-name" required></div>
+          <div><label for="cf-prenom" class="block text-sm font-medium mb-1">Prénom</label><input id="cf-prenom" name="prenom" class="fld" data-fs-field type="text" autocomplete="given-name" required></div>
+          <div><label for="cf-nom" class="block text-sm font-medium mb-1">Nom</label><input id="cf-nom" name="nom" class="fld" data-fs-field type="text" autocomplete="family-name" required></div>
         </div>
-        <div><label for="cf-objet" class="block text-sm font-medium mb-1">Objet</label><input id="cf-objet" name="objet" class="fld" type="text" required></div>
-        <div><label for="cf-mail" class="block text-sm font-medium mb-1">Adresse e-mail</label><input id="cf-mail" name="email" class="fld" type="email" autocomplete="email" required></div>
-        <div><label for="cf-msg" class="block text-sm font-medium mb-1">Votre message</label><textarea id="cf-msg" name="message" class="fld" rows="5" required></textarea></div>
+        <div><label for="cf-objet" class="block text-sm font-medium mb-1">Objet</label><input id="cf-objet" name="objet" class="fld" data-fs-field type="text" required></div>
+        <div><label for="cf-mail" class="block text-sm font-medium mb-1">Adresse e-mail</label><input id="cf-mail" name="email" class="fld" data-fs-field type="email" autocomplete="email" required></div>
+        <div><label for="cf-msg" class="block text-sm font-medium mb-1">Votre message</label><textarea id="cf-msg" name="message" class="fld" data-fs-field rows="5" required></textarea></div>
         <button type="submit" class="btn w-full sm:w-auto">Envoyer mon message</button>
         <div id="cf-status" role="status" aria-live="polite" hidden class="rounded-lg px-4 py-3 text-sm font-medium"></div>
       </form>
-      <script>
-      (function(){
-        var f=document.getElementById('cf'),s=document.getElementById('cf-status'),b=f.querySelector('button[type=submit]');
-        var ERR='Votre message n’a pas pu être envoyé. Écrivez-nous à shefa.business7@gmail.com ou appelez-nous au 02\u00a059\u00a050\u00a089\u00a054.';
-        function show(ok,t){s.textContent=t;s.hidden=false;s.style.background=ok?'#e6f2e3':'#fbe9e7';s.style.color=ok?'#1d4a2a':'#7a1d14';s.style.border='1px solid '+(ok?'#b9d9b2':'#efc2bc');}
-        f.addEventListener('submit',function(e){
-          e.preventDefault();
-          if(!f.checkValidity()){f.reportValidity();return;}
-          var label=b.textContent;b.disabled=true;b.textContent='Envoi en cours…';s.hidden=true;
-          fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}})
-            .then(function(r){
-              if(r.ok){f.reset();show(true,'Message envoyé ✓ Merci, nous vous répondrons rapidement.');}
-              else{show(false,ERR);}
-            })
-            .catch(function(){show(false,ERR);})
-            .then(function(){b.disabled=false;b.textContent=label;});
-        });
-      })();
-      </script>
       </div>
       <div id="cb-wrap" hidden>
         <h3 class="text-xl">Contactez-moi</h3>
         <p class="mt-2 text-sm" style="color:var(--mute)">Laissez-nous votre nom et votre numéro de téléphone.</p>
         <form id="cb" class="mt-5 space-y-4" action="https://formspree.io/f/xdeggzwz" method="POST">
           <input type="hidden" name="objet" value="Demande de rappel">
-          <div class="grid sm:grid-cols-2 gap-4"><div><label for="cb-prenom" class="block text-sm font-medium mb-1">Prénom</label><input id="cb-prenom" name="prenom" class="fld" type="text" autocomplete="given-name" required></div><div><label for="cb-nom" class="block text-sm font-medium mb-1">Nom</label><input id="cb-nom" name="nom" class="fld" type="text" autocomplete="family-name" required></div></div>
-          <div><label for="cb-telephone" class="block text-sm font-medium mb-1">Numéro de téléphone</label><input id="cb-telephone" name="telephone" class="fld" type="tel" inputmode="tel" autocomplete="tel" minlength="6" required></div>
+          <div class="grid sm:grid-cols-2 gap-4"><div><label for="cb-prenom" class="block text-sm font-medium mb-1">Prénom</label><input id="cb-prenom" name="prenom" class="fld" data-fs-field type="text" autocomplete="given-name" required></div><div><label for="cb-nom" class="block text-sm font-medium mb-1">Nom</label><input id="cb-nom" name="nom" class="fld" data-fs-field type="text" autocomplete="family-name" required></div></div>
+          <div><label for="cb-telephone" class="block text-sm font-medium mb-1">Numéro de téléphone</label><input id="cb-telephone" name="telephone" class="fld" data-fs-field type="tel" inputmode="tel" autocomplete="tel" minlength="6" required></div>
           <button type="submit" class="btn w-full sm:w-auto">Envoyer ma demande</button>
           <div id="cb-status" role="status" aria-live="polite" hidden class="rounded-lg px-4 py-3 text-sm font-medium"></div>
         </form>
         <p class="mt-5"><button type="button" id="cb-back" class="underline text-sm" style="text-decoration-color:var(--gold)">← Retour au formulaire de contact</button></p>
         <script>
         (function(){
-          var cf=document.getElementById('cf-wrap'),cb=document.getElementById('cb-wrap'),f=document.getElementById('cb'),s=document.getElementById('cb-status'),b=f.querySelector('button[type=submit]');
-          var ERR='Votre demande n’a pas pu être envoyée. Appelez-nous au 02\u00a059\u00a050\u00a089\u00a054 ou écrivez-nous à shefa.business7@gmail.com.';
-          function swap(toCb){cf.hidden=toCb;cb.hidden=!toCb;s.hidden=true;var t=toCb?cb:cf;t.scrollIntoView({behavior:'smooth',block:'center'});if(toCb){document.getElementById('cb-prenom').focus({preventScroll:true});}}
+          var cf=document.getElementById('cf-wrap'),cb=document.getElementById('cb-wrap'),st=document.getElementById('cb-status');
+          function swap(toCb){cf.hidden=toCb;cb.hidden=!toCb;st.hidden=true;var t=toCb?cb:cf;t.scrollIntoView({behavior:'smooth',block:'center'});if(toCb){document.getElementById('cb-prenom').focus({preventScroll:true});}}
           document.getElementById('cb-open').addEventListener('click',function(){swap(true);});
           document.getElementById('cb-back').addEventListener('click',function(){swap(false);});
-          function show(ok,t){s.textContent=t;s.hidden=false;s.style.background=ok?'#e6f2e3':'#fbe9e7';s.style.color=ok?'#1d4a2a':'#7a1d14';s.style.border='1px solid '+(ok?'#b9d9b2':'#efc2bc');}
-          f.addEventListener('submit',function(e){
-            e.preventDefault();
-            if(!f.checkValidity()){f.reportValidity();return;}
-            var label=b.textContent;b.disabled=true;b.textContent='Envoi en cours…';s.hidden=true;
-            fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}})
-              .then(function(r){if(r.ok){f.reset();show(true,'Demande envoyée ✓ Merci, nous vous recontacterons rapidement.');}else{show(false,ERR);}})
-              .catch(function(){show(false,ERR);})
-              .then(function(){b.disabled=false;b.textContent=label;});
-          });
         })();
         </script>
       </div>
@@ -321,5 +291,35 @@ label{text-align:left}
   a.forEach(function(t){var v=t.nodeValue.replace(/ ([?:;!»])/g,'\u00a0$1');if(v!==t.nodeValue)t.nodeValue=v;});
 })();
 </script>
+<script>
+(function(){
+  var TEL='02\u00a059\u00a050\u00a089\u00a054';
+  var ERR_MSG='Votre message n’a pas pu être envoyé. Écrivez-nous à shefa.business7@gmail.com ou appelez-nous au '+TEL+'.';
+  var ERR_CB='Votre demande n’a pas pu être envoyée. Appelez-nous au '+TEL+' ou écrivez-nous à shefa.business7@gmail.com.';
+  window.formspree=window.formspree||function(){(formspree.q=formspree.q||[]).push(arguments);};
+  function wire(formSel,statusSel,okMsg,errMsg){
+    var form=document.querySelector(formSel),st=document.querySelector(statusSel);
+    if(!form||!st)return;
+    var btn=form.querySelector('button[type=submit]'),label=btn.textContent;
+    function show(ok,t){st.textContent=t;st.hidden=false;st.style.background=ok?'#e6f2e3':'#fbe9e7';st.style.color=ok?'#1d4a2a':'#7a1d14';st.style.border='1px solid '+(ok?'#b9d9b2':'#efc2bc');}
+    form.addEventListener('submit',function(e){
+      if(window.__fsFail){e.preventDefault();e.stopImmediatePropagation();show(false,errMsg);}
+    },true);
+    formspree('initForm',{
+      formElement:formSel,
+      formId:'xdeggzwz',
+      disable:function(){btn.disabled=true;btn.textContent='Envoi en cours…';st.hidden=true;},
+      enable:function(){btn.disabled=false;btn.textContent=label;},
+      renderSuccess:function(){form.reset();show(true,okMsg);},
+      renderFieldErrors:function(ctx,err){console.error('Formspree – erreur de champ',err);show(false,'Merci de vérifier les champs du formulaire.');},
+      renderFormError:function(ctx,msg){console.error('Formspree – erreur',msg);show(false,errMsg);},
+      onFailure:function(ctx,err){console.error('Formspree – échec',err);show(false,errMsg);}
+    });
+  }
+  wire('#cf','#cf-status','Message envoyé ✓ Merci, nous vous répondrons rapidement.',ERR_MSG);
+  wire('#cb','#cb-status','Demande envoyée ✓ Merci, nous vous recontacterons rapidement.',ERR_CB);
+})();
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer onerror="window.__fsFail=1"></script>
 </body>
 </html>
